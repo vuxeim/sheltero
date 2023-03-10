@@ -1,12 +1,11 @@
 from types import SimpleNamespace
 import os
 import datetime
+import colorama
 
 
-import vault
 import stage
 import utils
-import colorama
 import game
 import getkey
 import text_component as component
