@@ -1,0 +1,5 @@
+Load Game  ( l )
+New Game   ( n )
+Settings   ( s )
+Help       ( h )
+Quit       ( q )

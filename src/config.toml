@@ -1,0 +1,7 @@
+[LOGGING]
+level = "ERROR"
+file = "log.txt"
+format = "%(levelname)s:%(asctime)s:%(filename)s:%(message)s"
+
+[PROMPT]
+appearance = ".LIGHTMAGENTA .\" .stage .\" . .GREEN .name . .LIGHTBLUE .denizens . .YELLOW .$ .balance .RESET .> ."
