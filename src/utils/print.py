@@ -2,7 +2,7 @@ import sys
 import time
 
 
-def bprint(*text: str, sleep: float = 0.003, sep: str = ' ', end: str = '\n') -> None:
+def bprint(*text: str, sleep: float = 0.03, sep: str = ' ', end: str = '\n') -> None:
     for char in sep.join(text):
         sys.stdout.write(char)
         sys.stdout.flush()

@@ -15,6 +15,8 @@ class Stage():
         self.game: game.Game = g
         self.name: str = name
         self.prompt: str = str()
+        self.raw_prompt: str = str()
+        self.prompt_items: list[str] = list()
         self.command_handler: command.CommandHandler = command.CommandHandlerFactory(self.game, self)
 
     def loop(self) -> None:
@@ -36,7 +38,7 @@ class Stage():
     def update_prompt(self) -> None:
         final_items: list = []
         raw_items: list = []
-        for item in self.game.prompt_items:
+        for item in self.prompt_items:
             if item in utils.colors.keys():
                 _code = '\x1b[' + str(utils.colors[item]) + 'm'
                 final_items.append(_code)
@@ -46,7 +48,7 @@ class Stage():
             elif len(item) == 1:
                 raw_items.append(item)
                 final_items.append(item)
-            elif not item:
+            elif item == '':
                 raw_items.append(' ')
                 final_items.append(' ')
             else:
@@ -66,12 +68,14 @@ class MainMenu(Stage):
     }
 
     def __init__(self, game):
-        super().__init__('Main Menu', game)
+        _name = 'Main Menu'
+        super().__init__(_name, game)
 
     def loop(self) -> None:
         if self.game.kb.wait_for_input():
             self.game.kb.echo = True
-            self.game.handle_command(self.game.kb.pop())
+            _cmd = self.game.kb.pop()
+            self.game.handle_command(_cmd)
 
     def render(self, ts):
         utils.clear_screen()
@@ -125,8 +129,8 @@ class GameStage(Stage):
     }
 
     def __init__(self, g):
-        super().__init__('Vault', g)
-        self.update_prompt()
+        _name = 'Vault'
+        super().__init__(_name, g)
 
     def loop(self) -> None:
         self.update_prompt()
@@ -134,7 +138,7 @@ class GameStage(Stage):
             self.game.handle_command(self.game.kb.pop())
 
     def render(self, ts) -> None:
-        utils.clear_screen() # NOTE if loop will not be blocking anymore this will make screen blink
+        utils.clear_screen() # NOTE if loop() will not be blocking anymore this will make screen blink
         padding: int = 3
         for component in self.game.components[::-1]:
             padding += len(component.texts)
@@ -144,7 +148,7 @@ class GameStage(Stage):
         utils.pprint(ts.lines, 0, '└'+'─'*(ts.columns-2)+'┘')
         utils.pprint(ts.lines-1, ts.columns, '│')
         utils.pprint(ts.lines-1, 0, '│ '+self.prompt)
-        print(colorman.CURSOR(ts.lines-1, len('│ '+self.raw_prompt)))
+        utils.fprint(colorman.CURSOR(len(self.raw_prompt)+3, ts.lines-1))
 
 
 class Inventory(Stage):

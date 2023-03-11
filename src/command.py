@@ -72,10 +72,10 @@ class MainMenuCommandHandler(CommandHandler):
             name: str = ""
             if self.game.kb.wait_for_enter():
                 name = self.game.kb.pop().strip()
-            if not name:
-                utils.bprint('Vault\'s name not specified.')
-            else:
+            if name != '':
                 self.game.start(name)
+            else:
+                utils.bprint('Vault\'s name not specified.')
 
         elif cmd == 's':
             print('settings will be here in the future')

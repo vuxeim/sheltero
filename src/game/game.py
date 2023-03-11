@@ -55,9 +55,6 @@ class Game():
         if not os.path.exists(_saves_path):
             os.mkdir(_saves_path)
 
-        _appearance = self.config.PROMPT.appearance
-        self.prompt_items: list[str] = _appearance.replace(' ','').split('.')[1:]
-
         self.kb: keyboard.Keyboard = keyboard.Keyboard()
 
         self.stages: stage_stack.Stack = stage_stack.Stack()
@@ -87,7 +84,11 @@ class Game():
         _text = f'\nWelcome in vault {self.vault.data["name"]!r}'
         p = colorman.Palette(colorman.FORE.RED)
         utils.bprint(p(_text))
-        self.stages.push(stage.GameStage(self))
+        _game_stage = stage.GameStage(self)
+        _appearance = self.config.PROMPT.appearance
+        _game_stage.prompt_items: list[str] = _appearance.replace(' ','').split('.')[1:]
+        _game_stage.update_prompt()
+        self.stages.push(_game_stage)
 
     def quit(self) -> None:
         # NOTE in the future other acions should be stopped here
@@ -112,6 +113,6 @@ class Game():
                 utils.clear_screen()
 
             self.stages.top().render(self.size)
-            self.stages.top().loop()
+            self.stages.top().loop() # Blocking function
 
         return 0
