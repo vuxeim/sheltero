@@ -1,7 +1,8 @@
-# https://en.wikipedia.org/wiki/ANSI_escape_code
-
-    
+from __future__ import annotations
 from typing import Self
+
+
+# https://en.wikipedia.org/wiki/ANSI_escape_code
 
 
 _names: dict[int, str] = {
@@ -9,6 +10,33 @@ _names: dict[int, str] = {
     3: 'fore', 9: 'fore',
     4: 'back', 10: 'back',
 }
+
+class CURSOR:
+
+    class CODE:
+        BACK = '\x1b[1D'
+        FORWARD = '\x1b[1C'
+        UP = '\x1b[1A'
+        DOWN = '\x1b[1B'
+
+    class BACK:
+        def __new__(cls, n: int = 1) -> str:
+            return CURSOR.CODE.BACK.replace('1', str(n), 1) 
+
+    class FORWARD:
+        def __new__(cls, n: int = 1) -> str:
+            return CURSOR.CODE.FORWARD.replace('1', str(n), 1) 
+
+    class UP:
+        def __new__(cls, n: int = 1) -> str:
+            return CURSOR.CODE.UP.replace('1', str(n), 1) 
+
+    class DOWN:
+        def __new__(cls, n: int = 1) -> str:
+            return CURSOR.CODE.DOWN.replace('1', str(n), 1) 
+
+    def __new__(cls, x: int = 1, y: int = 1) -> str:
+        return f'\x1b[{y};{x}H'
 
 
 class STYLE:
@@ -89,7 +117,7 @@ class Palette:
         self._style = '\x1b[' + ';'.join(str(s) for s in self._list) + 'm', '\x1b[0m'
         return self
     
-    def __add__(self, other: int) -> Self:
+    def __add__(self, other: int) -> Palette:
         _new = {Palette._get_type(other): other}
         _copy = self._codes.copy()
         _copy.update(_new)

@@ -3,7 +3,7 @@ import threading
 
 import utils
 import getkey
-import colorama
+from utils import colorman
 
 # https://stackoverflow.com/a/57387909
 class KeyboardThread(threading.Thread):
@@ -30,7 +30,10 @@ class Keyboard:
         if inp == getkey.key.BACKSPACE:
             if len(self.input):
                 self.input = self.input[:-1]
-                utils.fprint(colorama.Cursor.BACK()+' '+colorama.Cursor.BACK())
+                utils.fprint(
+                    colorman.CURSOR.CODE.BACK +
+                    ' ' + colorman.CURSOR.CODE.BACK
+                    )
         elif inp == getkey.key.ENTER:
             self.input += inp
         else:

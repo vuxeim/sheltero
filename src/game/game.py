@@ -1,7 +1,6 @@
 import os
 import time
 import logging
-import colorama
 
 
 import config
@@ -12,6 +11,7 @@ import utils
 import keyboard
 import text_component as component
 import game.game_helper as game_helper
+from utils import colorman
 
 
 # TODO 1. organise return codes to work with either `exit(code_number)` or `return code_number`
@@ -84,7 +84,9 @@ class Game():
         """ Effectively: loads vault, exits MainMenu stage and enters GameStage Stage"""
         self.vault: vault.Vault = vault.Vault(name, self.path)
         self.logger.debug(f'Started game in vault {name!r}')
-        utils.bprint(f'\n{colorama.Fore.RED}Welcome in vault \'{self.vault.data["name"]}\'{colorama.Fore.RESET}')
+        _text = f'\nWelcome in vault {self.vault.data["name"]!r}'
+        p = colorman.Palette(colorman.FORE.RED)
+        utils.bprint(p(_text))
         self.stages.push(stage.GameStage(self))
 
     def quit(self) -> None:

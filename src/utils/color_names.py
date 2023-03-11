@@ -1,24 +1,24 @@
-import colorama
+from utils import colorman
 
 
-colors: dict[str, str] = {
-    'BLACK': colorama.Fore.BLACK,
-    'BLUE': colorama.Fore.BLUE,
-    'CYAN': colorama.Fore.CYAN,
-    'GREEN': colorama.Fore.GREEN,
-    'MAGENTA': colorama.Fore.MAGENTA,
-    'RED': colorama.Fore.RED,
-    'WHITE': colorama.Fore.WHITE,
-    'YELLOW': colorama.Fore.YELLOW,
+colors: dict[str, int] = {
+    'BLACK': colorman.FORE.BLACK,
+    'RED': colorman.FORE.RED,
+    'GREEN': colorman.FORE.GREEN,
+    'YELLOW': colorman.FORE.YELLOW,
+    'BLUE': colorman.FORE.BLUE,
+    'MAGENTA': colorman.FORE.MAGENTA,
+    'CYAN': colorman.FORE.CYAN,
+    'WHITE': colorman.FORE.WHITE,
 
-    'LIGHTBLACK': colorama.Fore.LIGHTBLACK_EX,
-    'LIGHTBLUE': colorama.Fore.LIGHTBLUE_EX,
-    'LIGHTCYAN': colorama.Fore.LIGHTCYAN_EX,
-    'LIGHTGREEN': colorama.Fore.LIGHTGREEN_EX,
-    'LIGHTMAGENTA': colorama.Fore.LIGHTMAGENTA_EX,
-    'LIGHTRED': colorama.Fore.LIGHTRED_EX,
-    'LIGHTWHITE': colorama.Fore.LIGHTWHITE_EX,
-    'LIGHTYELLOW': colorama.Fore.LIGHTYELLOW_EX,
+    'LIGHTBLACK': colorman.FORE.BRIGHT.BLACK,
+    'LIGHTRED': colorman.FORE.BRIGHT.RED,
+    'LIGHTGREEN': colorman.FORE.BRIGHT.GREEN,
+    'LIGHTYELLOW': colorman.FORE.BRIGHT.YELLOW,
+    'LIGHTBLUE': colorman.FORE.BRIGHT.BLUE,
+    'LIGHTMAGENTA': colorman.FORE.BRIGHT.MAGENTA,
+    'LIGHTCYAN': colorman.FORE.BRIGHT.CYAN,
+    'LIGHTWHITE': colorman.FORE.BRIGHT.WHITE,
 
-    'RESET': colorama.Fore.RESET,
+    'RESET': colorman.STYLE.RESET,
 }

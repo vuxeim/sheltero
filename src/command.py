@@ -1,7 +1,5 @@
-from types import SimpleNamespace
 import os
 import datetime
-import colorama
 
 
 import stage
@@ -9,6 +7,7 @@ import utils
 import game
 import getkey
 import text_component as component
+from utils import colorman
 
 
 class CommandHandler:
@@ -95,7 +94,7 @@ class GameCommandHandler(CommandHandler):
         if cmd == getkey.key.UP:
             _len = len(self.game.kb.input)
             self.game.kb.input = self.previous_command
-            back = colorama.Cursor.BACK(_len) if _len else ''
+            back = colorman.CURSOR.BACK(_len) if _len else ''
             utils.fprint(f'{back}{" "*_len}{back}{self.game.kb.input}')
 
         elif cmd == 'help':
@@ -125,21 +124,33 @@ class GameCommandHandler(CommandHandler):
             self.game.stages.push(stage.Inventory(self.game))
 
         elif cmd == 'info':
-            C = SimpleNamespace(yellow='\x1b[33m', red='\x1b[31m', reset='\x1b[0m', grey='\x1b[30m')
+            p_gray = colorman.Palette(colorman.FORE.BRIGHT.WHITE)
+            p_yellow = p_gray + colorman.FORE.YELLOW
+            p_red = p_gray + colorman.FORE.RED
+            _hash = p_gray(' # ')
+            _escaped = p_yellow('Vault\'s name: ')
+            _name = p_red(utils.nice_time(self.game.vault.data['name']))
+            _creation = p_red(utils.nice_time(self.game.vault.data['creation_date']))
+            _denizens = p_red(str(self.game.vault.data['denizens']))
+            _time = p_red(utils.nice_time(self.game.vault.data['play_time'] + datetime.datetime.now() - self.game.vault.data['beg_time']))
+            _session = p_red(utils.nice_time(datetime.datetime.now() - self.game.vault.data['beg_time']))
             self.game.components.append(
                 component.CommandOutput(
-                    *[f" {C.grey}# {C.yellow}Vault\'s name: {C.red}{utils.nice_time(self.game.vault.data['name'])}{C.reset}",
-                    f" {C.grey}# {C.yellow}Vault was created: {C.red}{utils.nice_time(self.game.vault.data['creation_date'])}{C.reset}",
-                    f" {C.grey}# {C.yellow}Numbers of denizens: {C.red}{self.game.vault.data['denizens']}{C.reset}",
-                    f" {C.grey}# {C.yellow}Total playing time: {C.red}{utils.nice_time(self.game.vault.data['play_time'] + datetime.datetime.now() - self.game.vault.data['beg_time'])}{C.reset}",
-                    f" {C.grey}# {C.yellow}You have been playing for: {C.red}{utils.nice_time(datetime.datetime.now() - self.game.vault.data['beg_time'])}{C.reset}"]
+                    *[f"{_hash}{_escaped}{_name}",
+                    f"{_hash}{p_yellow('Vault was created: ')}{_creation}",
+                    f"{_hash}{p_yellow('Numbers of denizens: ')}{_denizens}",
+                    f"{_hash}{p_yellow('Total playing time: ')}{_time}",
+                    f"{_hash}{p_yellow('You have been playing for: ')}{_session}"]
                 )
             )
     
         elif cmd == 'exit':
+            p = colorman.Palette(colorman.FORE.YELLOW)
+
             self.game.vault.save()
             play_time = utils.nice_time(datetime.datetime.now() - self.game.vault.data['beg_time'])
-            self.game.components = [component.CommandOutput(f'{colorama.Fore.YELLOW}See you later!\nYou have been playing for: {play_time}{colorama.Fore.RESET}'),]
+            _text = p(f'See you later!\nYou have been playing for: {play_time}')
+            self.game.components = [component.CommandOutput(_text),]
             self.game.stages.pop()
 
         else:
@@ -154,7 +165,7 @@ class InventoryCommandHandler(CommandHandler):
             _len = len(self.game.kb.input)
             self.game.kb.input = self.previous_command
             if _len:
-                back = colorama.Cursor.BACK(_len)
+                back = colorman.CURSOR.BACK(_len)
             else:
                 back = ''
             utils.fprint('{}{" "*_len}{}{}'.format(

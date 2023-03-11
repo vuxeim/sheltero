@@ -27,9 +27,3 @@ def nice_time(time) -> str:
 def clear_screen() -> None:
     sys.stdout.write("\x1b[2J")
     sys.stdout.flush()
-
-
-def cmove(x: int, y: int) -> None:
-    # TODO is incrementing y is good solution?
-    sys.stdout.write(f"\033[{x};{y+1}H")
-    sys.stdout.flush()

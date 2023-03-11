@@ -2,6 +2,7 @@ import os
 
 
 import utils
+from utils import colorman
 import game
 import command
 
@@ -37,7 +38,8 @@ class Stage():
         raw_items: list = []
         for item in self.game.prompt_items:
             if item in utils.colors.keys():
-                final_items.append(utils.colors[item])
+                _code = '\x1b[' + str(utils.colors[item]) + 'm'
+                final_items.append(_code)
             elif item == 'stage':
                 raw_items.append(self.name)
                 final_items.append(self.name)
@@ -142,7 +144,7 @@ class GameStage(Stage):
         utils.pprint(ts.lines, 0, '└'+'─'*(ts.columns-2)+'┘')
         utils.pprint(ts.lines-1, ts.columns, '│')
         utils.pprint(ts.lines-1, 0, '│ '+self.prompt)
-        utils.cmove(ts.lines-1, len('│ '+self.raw_prompt))
+        print(colorman.CURSOR(ts.lines-1, len('│ '+self.raw_prompt)))
 
 
 class Inventory(Stage):

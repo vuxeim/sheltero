@@ -1,7 +1,10 @@
 import os
 import pickle
-import colorama
 import glob
+
+
+from utils import colorman
+
 
 def path():
     """Returns current path"""
@@ -18,7 +21,7 @@ def data(name):
     if os.path.exists(f'{_path}/saves/{name}'):
         with open(f'{_path}/saves/{name}/{name}.dat', 'rb') as f:
             data = pickle.load(f)
-        print('\n'.join([f"{colorama.Fore.BLUE}{str('{}')!r}: {colorama.Fore.YELLOW}{str('{}')} {colorama.Fore.RED}{str('{}')}{colorama.Fore.RESET}".format(*data) for data in [[k, v, str(type(v))[8:-2]] for k, v in data.items()]]))
+        print('\n'.join([f"{colorman.FORE.BLUE}{str('{}')!r}: {colorman.FORE.YELLOW}{str('{}')} {colorman.FORE.RED}{str('{}')}{colorman.STYLE.RESET}".format(*data) for data in [[k, v, str(type(v))[8:-2]] for k, v in data.items()]]))
     else:
         print(f'Save {name!r} doesn\'t exist')
 
@@ -32,11 +35,11 @@ def todos():
     def colorize():
         return '{}{}{}{}:{}{}{}{}'.format(
             " "*(NSPACE-len(str(file))),
-            colorama.Fore.GREEN,
+            colorman.FORE.GREEN,
             file,
-            colorama.Fore.BLUE,
+            colorman.FORE.BLUE,
             line_num,
-            colorama.Fore.RESET,
+            colorman.STYLE.RESET,
             " "*(LSPACE-len(str(line_num))),
             rep(line)
         )
@@ -62,8 +65,12 @@ def todos():
                     types[xtype].append(colorize())
                 line_num += 1
 
-    print(f'\n{colorama.Fore.YELLOW}TODOs ({len(todos)}): {colorama.Fore.RESET}')
+    p_y = colorman.Palette(colorman.FORE.YELLOW)
+    p_m = p_y + colorman.FORE.MAGENTA
+    _todos = f'\nTODOs ({len(todos)}):'
+    _notes = f'\nNOTEs ({len(notes)}):'
+    print(p_y(_todos))
     print('\n'.join(todos))
 
-    print(f'\n{colorama.Fore.MAGENTA}NOTEs ({len(notes)}): {colorama.Fore.RESET}')
+    print(p_m(_notes))
     print('\n'.join(notes), '\n')

@@ -1,10 +1,12 @@
 import sys
-import colorama
 
-up = colorama.Cursor.UP
-back = colorama.Cursor.BACK
 
-colorama.init()
+from utils import colorman
+
+
+up = colorman.CURSOR.CODE.UP
+back = colorman.CURSOR.CODE.BACK
+
 
 name = str(input('Podaj literke: '))
 print(back() + up() + "Welcome to a humble little screen control demo program")
