@@ -15,7 +15,6 @@ from utils import colorman
 
 
 # TODO 1. organise return codes to work with either `exit(code_number)` or `return code_number`
-# TODO 2. prevent the Traceback's output from growing by going from menu to game back and forth
 # TODO 3. implement these things: (economy system) (denizens) (random events) (items) (craftings) (shops) (expeditions) (pets and other NPCs)
 # TODO 5. use logging module in a bit more advanced way (https://docs.python.org/3/howto/logging-cookbook.html)
 # TODO 4. implement language translations

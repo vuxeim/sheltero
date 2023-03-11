@@ -1,13 +1,16 @@
 import inspect
 
+
 # This file is responsible for importing names from __init__
 # You should edit tools in the __init__.py file
+
 
 try:
     _tk = __import__('__init__', globals(), locals())
 except ModuleNotFoundError:
     print(f'Correct usage:\npython -i toolkit')
     exit(1)
+
 
 tools = []
 for name, item in inspect.getmembers(_tk):
@@ -20,11 +23,13 @@ for name, item in inspect.getmembers(_tk):
         else:
             print(f'ERROR!!! {name!r} already exists in scope')
 
-print('Welcome in sheltero tools!', path())
+
+print('Welcome in sheltero tools!', path()) # ignore
 for tool_type in set([tool[0] for tool in tools]):
     print(tool_type+'s:')
     for item in sorted(tools, key=lambda item: item[0]):
         if item[0] == tool_type:
             print(f'\t{item[1]} - {item[2].__doc__ or ""}')
+
 
 del _tk, inspect, tools
