@@ -1,11 +1,11 @@
-class TextComponent: ...
+class UIComponent: ...
 
-class CommandOutput(TextComponent):
+class CommandOutput(UIComponent):
     def __init__(self, *segments: str):
         self.texts = []
         for segment in segments:
             self.texts += segment.split('\n')
 
-class GameMenu(TextComponent):
+class GameMenu(UIComponent):
     def __init__(self, segments: list[str]):
         self.texts = segments

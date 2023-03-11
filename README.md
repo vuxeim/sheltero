@@ -10,6 +10,7 @@ python main.py
 ```
 
 ### Poor man's toolkit
+For debugging and developing purposes
 ```shell
 python -i toolkit
 ```

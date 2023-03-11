@@ -6,7 +6,7 @@ import stage
 import utils
 import game
 import getkey
-import text_component as component
+import ui.component as component
 from utils import colorman
 
 

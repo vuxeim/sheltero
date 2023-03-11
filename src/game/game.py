@@ -5,11 +5,11 @@ import logging
 
 import config
 import stage
-import stage_stack
+import stage.stack
 import vault
 import utils
 import keyboard
-import text_component as component
+import ui.component as component
 import game.game_helper as game_helper
 from utils import colorman
 
@@ -56,7 +56,7 @@ class Game():
 
         self.kb: keyboard.Keyboard = keyboard.Keyboard()
 
-        self.stages: stage_stack.Stack = stage_stack.Stack()
+        self.stages: stage.stack.Stack = stage.stack.Stack()
         _main_menu_stage = stage.MainMenu(self)
         self.stages.push(_main_menu_stage)
 
