@@ -1,7 +1,7 @@
 import game
 
 def main():
-    return game.Game(__file__)
+    return game.Game().play(__file__)
 
 if __name__ == '__main__':
-    main()
+    exit(main())

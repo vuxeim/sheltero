@@ -23,9 +23,6 @@ from utils import colorman
 
 class Game():
 
-    def __init__(self, path: str) -> None:
-        self.play(path)
-
     def play(self, path: str) -> int:
 
         self.path: str = os.path.dirname(path)
@@ -56,16 +53,20 @@ class Game():
 
         self.kb: keyboard.Keyboard = keyboard.Keyboard()
 
+        # Initialize stages stack
         self.stages: stage.stack.Stack = stage.stack.Stack()
+
+        # Add MainMenu stage to game's stage stack
         _main_menu_stage = stage.MainMenu(self)
         self.stages.push(_main_menu_stage)
 
-        # Define list of text components to render
-        _menu_layout = game_helper.get_menu_layout(self.path)
-        _comp = component.GameMenu(_menu_layout)
-        _components = []
-        _components.append(_comp)
-        self.components = _components
+        # Add MainMenu UIComponent to MainMenu Stage's components
+        _text_menu_layout = game_helper.get_menu_layout(self.path)
+        _main_menu_component = component.MainMenu(_text_menu_layout)
+        self.stages.top().components.append(_main_menu_component)
+
+        # Don't echo in MainMenu UIComponent
+        self.kb.echo = False
 
         self.running: bool = True
         return self.game_loop()
@@ -94,6 +95,7 @@ class Game():
         self.kb.stop()
         self.running = False
         utils.clear_screen()
+        utils.fprint('\n')
 
     def game_loop(self) -> int:
         self.prev_time = time.perf_counter()

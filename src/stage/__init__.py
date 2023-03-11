@@ -1,6 +1,7 @@
 import utils
 import command
 import game
+import ui.component as component
 
 
 class Stage():
@@ -14,6 +15,7 @@ class Stage():
         self.raw_prompt: str = str()
         self.prompt_items: list[str] = list()
         self.command_handler: command.CommandHandler = command.CommandHandlerFactory(self.game, self)
+        self.components: list[component.UIComponent] = list()
 
     def loop(self) -> None:
         self.game.logger.error(f'Loop not inplemented for stage {self.name!r}')

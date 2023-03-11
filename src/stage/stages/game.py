@@ -26,7 +26,7 @@ class GameStage(Stage):
     def render(self, ts) -> None:
         utils.clear_screen() # NOTE if loop() will not be blocking anymore this will make screen blink
         padding: int = 3
-        for component in self.game.components[::-1]:
+        for component in self.components[::-1]:
             padding += len(component.texts)
             for i, text in enumerate(component.texts):
                 utils.pprint(ts.lines-padding+i, 0, text)
@@ -35,5 +35,3 @@ class GameStage(Stage):
         utils.pprint(ts.lines-1, ts.columns, '│')
         utils.pprint(ts.lines-1, 0, '│ '+self.prompt)
         utils.fprint(colorman.CURSOR(len(self.raw_prompt)+3, ts.lines-1))
-
-

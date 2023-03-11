@@ -27,7 +27,7 @@ class MainMenu(Stage):
     def render(self, ts):
         utils.clear_screen()
         # Center text
-        for component in self.game.components:
+        for component in self.components:
             padding: int = round(ts.lines*(2/3))-len(component.texts)//2
             for i, text in enumerate(component.texts):
                 utils.pprint(padding+i, ts.columns//2-len(text)//2, text)
