@@ -2,6 +2,8 @@
 # What chars to print (if any)
 # Keycode(s) generating event
 import string
+
+
 from .unikeys import UnicodeAsciiKeys
 
 
@@ -49,12 +51,14 @@ ASCII_NAMES = {
 
 
 class UnicodeKeys:
+    """ Represents Unicode keys """
     # Names from ftp://ftp.unicode.org/Public/UNIDATA/NamesList.txt
     NULL = chr(0x00)
     START_OF_HEADING = chr(0x01)
 
 
 class JargonKeys:
+    """ Represents common names for keys """
     BANG = '!'
     SHRIEK = '!'
     DOUBLE_QUOTE = '"'
@@ -80,6 +84,7 @@ class JargonKeys:
 
 
 class IntercalKeys:
+    """ Represents itercal keys """
     SPOT = '.'
     TWO_SPOT = ':'
     TAIL = ','
@@ -124,6 +129,7 @@ class IntercalKeys:
 
 
 class VT100StandardModeKeys:
+    """ Represents VT100 terminal standard keys """
     # http://www.braun-home.net/michael/mbedit/info/misc/VT100_commands.htm
     # http://www.ccs.neu.edu/research/gpc/MSim/vona/terminal/VT100_Escape_Codes.html
     F1 = '\x1bOP'
@@ -138,6 +144,7 @@ class VT100StandardModeKeys:
 
 
 class VT100ApplicationsModeKeys:
+    """ Represents VT100 terminal applications keys """
     F1 = '\x1bOP'
     F2 = '\x1bOQ'
     F3 = '\x1bOR'
@@ -165,6 +172,7 @@ class VT100ApplicationsModeKeys:
 
 
 class VT220Keys:
+    """ Represents VT220 terminal keys """
     # F1-F5 didn't exist historically, but were added by later emulators
     F1 = '\x1b[11~'
     F2 = '\x1b[12~'
@@ -185,6 +193,7 @@ class VT220Keys:
 
 
 class UnixKeys:
+    """ Represents Unix keys """
     # Keys found experimentally, of unknown provenance
     ESC = '\x1b'
 
@@ -204,6 +213,7 @@ class UnixKeys:
 
 
 class AlternativeUnixFunctionKeys:
+    """ Represents alternative Unix keys """
     # Unsure origin: alternate V220 mode?
     F1 = '\x1bO11~'
     F2 = '\x1bO12~'
@@ -220,6 +230,7 @@ class AlternativeUnixFunctionKeys:
 
 
 class WindowsKeys:
+    """ Represents Windows keys """
     ESC = '\x1b'
 
     LEFT = '\xe0K'
@@ -350,12 +361,13 @@ class WindowsKeys:
 
 
 class ControlKeys:
-    def __init__(self, format='CTRL_{}'):
+    """ Represents control keys """
+    def __init__(self, fmt='CTRL_{}'):
         for i in range(0x20):
             low_char = chr(i)
             high_char = chr(i + 0x40)
             name = ASCII_NAMES.get(high_char, high_char).upper()
-            ctrl_name = format.format(name)
+            ctrl_name = fmt.format(name)
             setattr(self, ctrl_name, low_char)
 
 

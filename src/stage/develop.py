@@ -1,9 +1,28 @@
+import glob
 import os
 import pickle
-import glob
+
+import utils
+from handler import CommandHandler
+from stage import Stage
+from utils import colorman
 
 
-import local_colorman as colorman
+class DevelopStage(Stage):
+    """
+    The main stage.
+    Used after choosing vault to play.
+    """
+
+    def __init__(self, game):
+        super().__init__(game)
+        self.command_handler = DevelopCommandHandler(game, self)
+
+    def loop(self) -> None:
+        super().loop()
+        self.update_prompt()
+        if self.game.keyb.wait_for_enter():
+            self.game.handle_command(self.game.keyb.pop())
 
 
 def path():
@@ -11,19 +30,23 @@ def path():
     return os.path.dirname(os.path.dirname(__file__))
 
 
-_path = path()
+def print_title() -> None:
+    segments = utils.square_read(os.path.join(path(), 'resources', 'rexts', 'sheltero_title'))
+    for s in segments:
+        print(s)
 
 
-def saves():
+def saves(_path: str):
     """Returns list of all saves"""
     _saves_dir = os.path.join(_path, 'saves')
     return os.listdir(_saves_dir)
 
 
-def data(name):
+def data(name: str):
     """Prints save's data"""
+    # TODO go back there
 
-    _full_path = os.path.join(_path, 'saves', name)
+    _full_path = os.path.join(path(), 'saves', name)
     if not os.path.exists(_full_path):
         print(f'Save {name!r} doesn\'t exist')
         return
@@ -55,10 +78,10 @@ def todos():
     p_b = p_y + colorman.FORE.BLUE
 
     def colorize(file: str, line_num: int, line: str):
-        
+
         def rep(line):
             # Remove some strings from line
-            _unwanted = ('#', 'TODO', 'NOTE', 'https://', 'http://')
+            _unwanted = '# TODO NOTE https:// http://'.split()
             _steps = [line := line.replace(r, '', 1) for r in _unwanted]
             _last = _steps[-1]
             return _last.strip()
@@ -112,3 +135,27 @@ def todos():
     _notes_header = f'\nNOTEs ({len(notes)}):'
     print(p_m(_notes_header))
     print('\n'.join(notes), '\n')
+
+
+class DevelopCommandHandler(CommandHandler):
+
+        """
+        tools = []
+        for name, item in inspect.getmembers(_tk):
+            if not name.startswith('_') and name not in [module[0] for module in inspect.getmembers(_tk, inspect.ismodule)]:
+                if name not in dir(__builtins__) and name not in locals().keys() and name not in globals().keys():
+                    pair = {name: item}
+                    locals().update(pair)
+                    globals().update(pair)
+                    tools.append([str(type(item))[8:-2], name, item])
+                else:
+                    print(f'ERROR!!! {name!r} already exists in scope')
+
+        # ignore error with path() not defined
+        print('Welcome in sheltero tools!', path())
+        for tool_type in set([tool[0] for tool in tools]):
+            print(tool_type+'s:')
+            for item in sorted(tools, key=lambda item: item[0]):
+                if item[0] == tool_type:
+                    print(f'\t{item[1]} - {item[2].__doc__ or ""}')
+        """

@@ -1,1 +1,2 @@
-from game.game import Game
+# export class
+from game._game import Game

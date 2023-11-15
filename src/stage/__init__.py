@@ -1,37 +1,40 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from game import Game
+    from handler import CommandHandler
 import utils
-import command
-import game
-import ui.component as component
+from ui import component
 
 
-class Stage():
+class Stage:
+    # TODO abstract class???
 
-    commands: dict = dict()
-
-    def __init__(self, name: str, g):
-        self.game: game.Game = g
-        self.name: str = name
+    def __init__(self, game):
+        self.game: Game = game
         self.prompt: str = str()
         self.raw_prompt: str = str()
-        self.prompt_items: list[str] = list()
-        self.command_handler: command.CommandHandler = command.CommandHandlerFactory(self.game, self)
-        self.components: list[component.UIComponent] = list()
+        self.prompt_items: list[str] = []
+        self.components: list[component.UIComponent] = []
+        self.command_handler: CommandHandler
+
+    @property
+    def name(self) -> str:
+        return self.__class__.__name__
 
     def loop(self) -> None:
-        self.game.logger.error(f'Loop not inplemented for stage {self.name!r}')
-        exit(1)
+        self.components = [c for c in self.components if c]
 
-    def render(self, ts):
-        self.game.logger.error(f'Rendering is not inplemented for stage {self.name!r}')
-        exit(1)
-    
     def show_credits(self):
-        self.game.logger.error(f'Displaying credits is not implemented for stage {self.name!r}')
-        exit(1)
-    
+        raise NotImplementedError(f'Displaying credits is not implemented for stage {self.name}')
+
     def close(self):
-        self.game.logger.error(f'Closing is not implemented for stage {self.name!r}')
-        exit(1)
+        raise NotImplementedError(f'Closing is not implemented for stage {self.name}')
+
+    def render(self):
+        for component in self.components:
+            component.render(self.game)
 
     def update_prompt(self) -> None:
         final_items: list = []
@@ -43,6 +46,15 @@ class Stage():
             elif item == 'stage':
                 raw_items.append(self.name)
                 final_items.append(self.name)
+            elif item == 'name':
+                raw_items.append(self.game.vault.data.name)
+                final_items.append(self.game.vault.data.name)
+            elif item == 'balance':
+                raw_items.append(str(self.game.vault.data.balance))
+                final_items.append(str(self.game.vault.data.balance))
+            elif item == 'denizens':
+                raw_items.append(str(self.game.vault.data.denizens))
+                final_items.append(str(self.game.vault.data.denizens))
             elif len(item) == 1:
                 raw_items.append(item)
                 final_items.append(item)
@@ -50,10 +62,14 @@ class Stage():
                 raw_items.append(' ')
                 final_items.append(' ')
             else:
-                raw_items.append(str(self.game.vault.data[item]))
-                final_items.append(str(self.game.vault.data[item]))
+                # Use smth else than exception here
+                raise NameError(f"Unknown prompt element in config '{item}'")
         self.prompt: str = ''.join(final_items)
         self.raw_prompt: str = ''.join(raw_items)
 
 
-from stage.stages import MainMenu, GameStage, Inventory
+# export classes
+from stage.develop import DevelopStage
+from stage.inventory import InventoryStage
+from stage.game import GameStage
+from stage.mainmenu import MainMenuStage

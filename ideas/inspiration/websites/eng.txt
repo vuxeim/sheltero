@@ -1,1 +1,20 @@
 https://github.com/bbtong/python-text-rpg
+
+# Pokemon Turn Based battle (Python)
+https://codereview.stackexchange.com/questions/217222/pokemon-turn-based-battle-python
+
+# A fan-made, text-adventure Pokémon game in Python
+https://pythonawesome.com/a-fan-made-text-adventure-pokemon-game-in-python/
+
+# A terminal based Pokemon like game
+https://github.com/lxgr-linux/pokete
+
+# A terminal based pokemon game written in python
+# with features including a save and load game,
+# Catching pokemons, Going to gym battles to collect
+# badges or even fighting in Indigo league.
+https://github.com/Sahil-k1509/cmd_pokemon
+
+# Crimson Hollow is a hand drawn isometric RPG set in a magical town,
+# hidden from the outside world.
+https://www.crimsonhollowgame.com/

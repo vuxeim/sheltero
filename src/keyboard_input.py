@@ -1,9 +1,49 @@
+import os
 import time
 import threading
 
 import utils
 import getkey
 from utils import colorman
+
+class _NtCursor:
+
+    import ctypes
+    class _CursorInfo(ctypes.Structure):
+        import ctypes
+        _fields_ = [("size", ctypes.c_int),
+                    ("visible", ctypes.c_byte)]
+
+    @staticmethod
+    def hide():
+        raise NotImplementedError()
+
+    @staticmethod
+    def show():
+        raise NotImplementedError()
+
+class _PosixCursor:
+
+    @staticmethod
+    def hide():
+        utils.fprint('\x1b[?25l')
+
+    @staticmethod
+    def show():
+        utils.fprint('\x1b[?25h')
+
+class _Cursor:
+
+    if os.name == 'nt':
+        impl = _NtCursor()
+    elif os.name == 'posix':
+        impl = _PosixCursor()
+    else:
+        # TODO better way to determine platform
+        raise Exception('Unsupported platform')
+
+    hide = impl.hide
+    show = impl.show
 
 # https://stackoverflow.com/a/57387909
 class KeyboardThread(threading.Thread):
@@ -25,14 +65,15 @@ class Keyboard:
         self.echo: bool = True
         self.input: str = str()
         self.thread = KeyboardThread(self.receive)
+        self.cursor: type[_Cursor] = _Cursor
 
     def receive(self, inp) -> None:
         if inp == getkey.key.BACKSPACE:
             if len(self.input):
                 self.input = self.input[:-1]
                 utils.fprint(
-                    colorman.CURSOR.CODE.BACK +
-                    ' ' + colorman.CURSOR.CODE.BACK
+                    colorman.CURSOR.BACK % 1 +
+                    ' ' + colorman.CURSOR.BACK % 1
                     )
         elif inp == getkey.key.ENTER:
             self.input += inp
@@ -61,3 +102,4 @@ class Keyboard:
     def stop(self) -> None:
         """ Safely kills the keyboard thread """
         self.thread.running = False
+        self.cursor.show()

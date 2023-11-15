@@ -108,6 +108,16 @@ red | rare | craftable | very hard | events, mobs, boss | 1 | common in mid game
 purple | epic | uncraftable | extremely hard | events, boss | 0,5 | gives magic effects
 gold | legendary | uncraftable | impossibly hard | boss | 0,1 | common in late game
 
+###### OR
+
+tier | %
+--: | ---
+common | 60%
+rare | 25%
+epic | 10%
+super rare | 4%
+legendary | 1%
+
 ---
 
 # OTHER
@@ -115,3 +125,4 @@ gold | legendary | uncraftable | impossibly hard | boss | 0,1 | common in late g
 nasze zapasy złota kurczą się panie
 tam gdzie mieszkam to psy są
 "jawed" me at the san diego zoo
+if your bones are wet then you're alive

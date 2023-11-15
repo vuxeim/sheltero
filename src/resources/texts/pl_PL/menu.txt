@@ -1,0 +1,5 @@
+Załaduj Grę  ( l )
+Nowa Gra     ( n )
+Ustawienia   ( s )
+Pomoc        ( h )
+Wyjdź        ( q )

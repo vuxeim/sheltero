@@ -1,7 +1,9 @@
-import game
+from game import Game
+
 
 def main():
-    return game.Game().play(__file__)
+    return Game(__file__)
+
 
 if __name__ == '__main__':
-    exit(main())
+    SystemExit(main())

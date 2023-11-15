@@ -2,16 +2,13 @@ import os
 import tomllib
 from typing import Any
 
+
 class Config:
 
-    class LOGGING:
+    class GENERAL:
+        lang: str
 
-        level: str
-        file: str
-        format: str
-    
     class PROMPT:
-        
         appearance: str
 
 
@@ -30,16 +27,11 @@ def load_config(path: str) -> Config:
     with open(_user_config, 'rb') as h:
         cfg: dict[str, Any] = tomllib.load(h)
 
-    class Config:
+    class _Config(Config):
+        class GENERAL:
+            lang: str = cfg['GENERAL']['lang']
 
-        class LOGGING:
-
-            level: str = cfg['LOGGING']['level']
-            file: str = cfg['LOGGING']['file']
-            format: str = cfg['LOGGING']['format']
-        
         class PROMPT:
-            
             appearance: str = cfg['PROMPT']['appearance']
 
-    return Config
+    return _Config()

@@ -11,32 +11,20 @@ _names: dict[int, str] = {
     4: 'back', 10: 'back',
 }
 
+class BUFFER:
+
+    ALTERNATIVE = '\x1b[?1049h'
+    NORMAL = '\x1b[?1049l'
+
 class CURSOR:
 
-    class CODE:
-        BACK = '\x1b[1D'
-        FORWARD = '\x1b[1C'
-        UP = '\x1b[1A'
-        DOWN = '\x1b[1B'
-
-    class BACK:
-        def __new__(cls, n: int = 1) -> str:
-            return CURSOR.CODE.BACK.replace('1', str(n), 1) 
-
-    class FORWARD:
-        def __new__(cls, n: int = 1) -> str:
-            return CURSOR.CODE.FORWARD.replace('1', str(n), 1) 
-
-    class UP:
-        def __new__(cls, n: int = 1) -> str:
-            return CURSOR.CODE.UP.replace('1', str(n), 1) 
-
-    class DOWN:
-        def __new__(cls, n: int = 1) -> str:
-            return CURSOR.CODE.DOWN.replace('1', str(n), 1) 
+    BACK = '\x1b[%dD'
+    FORWARD = '\x1b[%dC'
+    UP = '\x1b[%dA'
+    DOWN = '\x1b[%dB'
 
     def __new__(cls, x: int = 1, y: int = 1) -> str:
-        return f'\x1b[{y};{x}H'
+        return f'\x1b[{x};{y}H'
 
 
 class STYLE:
@@ -105,28 +93,28 @@ class Palette:
 
     @staticmethod
     def _get_type(code: int) -> str:
-        return _names.get((code - code%10) // 10)
-    
+        prefix = (code - code%10) // 10
+        type = _names.get(prefix)
+        if type is None:
+            raise Exception(f"Invalid type with prefix '{prefix}'")
+        return type
+
     def __call__(self, text: str) -> str:
         return text.join(self._style)
-    
+
     def __iadd__(self, other: int) -> Self:
         _new = {Palette._get_type(other): other}
         self._codes.update(_new)
-        self._list = self._codes.values()
+        self._list = list(self._codes.values())
         self._style = '\x1b[' + ';'.join(str(s) for s in self._list) + 'm', '\x1b[0m'
         return self
-    
+
     def __add__(self, other: int) -> Palette:
         _new = {Palette._get_type(other): other}
         _copy = self._codes.copy()
         _copy.update(_new)
         _list = _copy.values()
         return self.__class__(*_list)
-    
-    def __isub__(self, other: int) -> NotImplemented: return NotImplemented
-
-    def __sub__(self, other: int) -> NotImplemented: return NotImplemented
 
     def __len__(self) -> int:
         return len(self._list)
