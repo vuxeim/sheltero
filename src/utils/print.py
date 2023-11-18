@@ -24,7 +24,7 @@ def pprint(x: int, y: int, text: str) -> None:
 
 def nice_time(time) -> str:
     """ Strip milliseconds from time string """
-    return str(time).split(".")[0]
+    return str(time).split(".", maxsplit=1)
 
 
 def eprint(text: str) -> None:

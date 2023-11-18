@@ -1,8 +1,6 @@
 """
 Abstraction layer representing stack of stages
 """
-
-
 from __future__ import annotations
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
@@ -12,7 +10,7 @@ if TYPE_CHECKING:
 class Stack:
 
     def __init__(self) -> None:
-        self._stack = list()
+        self._stack = []
 
     def top(self) -> Stage:
         return self._stack[-1]

@@ -16,7 +16,7 @@ class PlatformError(Exception):
     pass
 
 
-class Platform(object):
+class Platform:
     def __init__(self, keys=None, interrupts=None):
         keys = keys or self.KEYS
 
@@ -49,15 +49,14 @@ class Platform(object):
                 issubclass(interrupt, BaseException):
                 raise interrupt
             else:
-                raise NotImplementedError('Unimplemented interrupt: {!r}'
-                                          .format(interrupt))
+                raise NotImplementedError(f'Unimplemented interrupt: {interrupt!r}')
         return keycode
 
     def bang(self):
         while True:
             code = self.getkey(True)
             name = self.keys.name(code) or '???'
-            print('{} = {!r}'.format(name, code))
+            print(f'{name} = {code!r}')
 
     # You MUST override at least one of the following
     def getchars(self, blocking=True):
@@ -69,8 +68,7 @@ class Platform(object):
     def getchar(self, blocking=True):
         for char in self.getchars(blocking):
             return char
-        else:
-            return None
+        return None
 
 
 class PlatformUnix(Platform):
@@ -105,7 +103,7 @@ class PlatformUnix(Platform):
         try:
             self.__decoded_stream = OSReadWrapper(self.stdin)
         except Exception as err:
-            raise PlatformError('Cannot use unix platform on non-file-like stream')
+            raise PlatformError(f'Cannot use unix platform on non-file-like stream:\n{err}')
 
     def fileno(self):
         return self.__decoded_stream.fileno()
@@ -131,7 +129,7 @@ class PlatformUnix(Platform):
                 yield self.__decoded_stream.read(1)
 
 
-class OSReadWrapper(object):
+class OSReadWrapper:
     """Wrap os.read binary input with encoding in standard stream interface.
 
     We need this since os.read works more consistently on unix, but only
@@ -243,5 +241,4 @@ def platform(name=None, keys=None, interrupts=None):
     for prefix, ctor in PLATFORMS:
         if name.startswith(prefix):
             return ctor(keys=keys, interrupts=interrupts)
-    else:
-        raise NotImplementedError('Unknown platform {!r}'.format(name))
+    raise NotImplementedError('Unknown platform {name!r}')

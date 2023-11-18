@@ -9,7 +9,6 @@ from ui import component
 
 
 class Stage:
-    # TODO abstract class???
 
     def __init__(self, game):
         self.game: Game = game
@@ -26,15 +25,15 @@ class Stage:
     def loop(self) -> None:
         self.components = [c for c in self.components if c]
 
-    def show_credits(self):
-        raise NotImplementedError(f'Displaying credits is not implemented for stage {self.name}')
-
-    def close(self):
+    def close(self) -> None:
         raise NotImplementedError(f'Closing is not implemented for stage {self.name}')
 
+    def handle(self, inp: str) -> None:
+        raise NotImplementedError(f'Handling input is not implemented for stage {self.name}')
+
     def render(self):
-        for component in self.components:
-            component.render(self.game)
+        for comp in self.components:
+            comp.render(self.game)
 
     def update_prompt(self) -> None:
         final_items: list = []

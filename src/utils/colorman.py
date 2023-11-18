@@ -3,7 +3,8 @@ from typing import Self
 
 
 # https://en.wikipedia.org/wiki/ANSI_escape_code
-
+class InvalidCode(Exception):
+    pass
 
 _names: dict[int, str] = {
     0: 'style',
@@ -94,10 +95,10 @@ class Palette:
     @staticmethod
     def _get_type(code: int) -> str:
         prefix = (code - code%10) // 10
-        type = _names.get(prefix)
-        if type is None:
-            raise Exception(f"Invalid type with prefix '{prefix}'")
-        return type
+        typee = _names.get(prefix)
+        if typee is None:
+            raise InvalidCode(f"Invalid type with prefix '{prefix}'")
+        return typee
 
     def __call__(self, text: str) -> str:
         return text.join(self._style)

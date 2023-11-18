@@ -2,23 +2,23 @@ import datetime
 import pickle
 from typing import Any
 
-import utils
-
-# NOTE Temporary constants because economy and denizens systems aren't implemented yet
-_STARTING_BALANCE: int = 980
-_STARTING_DENIZENS: int = 6
+# NOTE Temporary constants because economy
+# and denizens systems aren't implemented yet
+_STAR_BALANCE: int = 980
+_STAR_DENIZENS: int = 6
 
 
 class Data:
 
     __slots__ = ("name", "creation_date", "beg_time", "balance", "play_time", "denizens")
 
-    name: str
-    creation_date: datetime.datetime
-    beg_time: datetime.datetime
-    balance: int
-    play_time: datetime.timedelta
-    denizens: int
+    def __init__(self) -> None:
+        self.name: str
+        self.creation_date: datetime.datetime
+        self.beg_time: datetime.datetime
+        self.balance: int
+        self.play_time: datetime.timedelta
+        self.denizens: int
 
     def _setattr(self, name: str, obj: Any) -> None:
         """
@@ -55,10 +55,8 @@ class Data:
     def zero_init(self, name: str) -> None:
         """ Populate fields with default values """
         _now = datetime.datetime.now()
-        _default_values = (name, _now, _now, _STARTING_BALANCE, datetime.timedelta(0), _STARTING_DENIZENS)
-        if len(self.__slots__) != len(_default_values):
-            raise Exception("Not every field has default value asigned")
-        _data = {k: v for k, v in zip(self.__slots__, _default_values)}
+        _default_values = (name, _now, _now, _STAR_BALANCE, datetime.timedelta(0), _STAR_DENIZENS)
+        _data = dict(zip(self.__slots__, _default_values, strict=True))
         self.populate(_data)
 
     def populate(self, data: dict[str, Any]) -> None:

@@ -4,10 +4,8 @@ from typing import Any
 
 
 class Config:
-
     class GENERAL:
         lang: str
-
     class PROMPT:
         appearance: str
 

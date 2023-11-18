@@ -1,24 +1,19 @@
-"""
-Contains class representing main game object
-"""
-
-
 from typing import TYPE_CHECKING
 import os
 import time
 
-if TYPE_CHECKING:
-    from keyboard_input import Keyboard
-    from config import Config
 import config
 import stack
 import stage
 import vault
 import utils
-import keyboard_input
+import keyboard
 from ui import component
 from game import helper
 from utils import colorman
+if TYPE_CHECKING:
+    from keyboard_input import Keyboard
+    from config import Config
 
 
 # TODO 3. implement these things: (economy system) (denizens) (random events) (items) (craftings) (shops) (expeditions) (pets and other NPCs)
@@ -51,7 +46,7 @@ class Game:
         if not os.path.exists(_saves_path):
             os.mkdir(_saves_path)
 
-        self.keyb: Keyboard = keyboard_input.Keyboard()
+        self.keyb: Keyboard = keyboard.Keyboard()
 
         # Initialize stages stack
         self.stages: stack.Stack = stack.Stack()
@@ -72,13 +67,13 @@ class Game:
         self.keyb.cursor.hide()
 
         self.running: bool = True
-        try: self.game_loop()
-        except KeyboardInterrupt: self.quit()
+        try:
+            self.game_loop()
+        except KeyboardInterrupt:
+            self.quit()
 
     def handle_command(self, cmd: str) -> None:
-        """ Command dispatcher. Calls command handler of current stage. """
-        _stripped: str = cmd.strip()
-        self.stages.top().command_handler.execute(_stripped)
+        raise DeprecationWarning('stage.top().handle(<cmd>)')
 
     def start(self, name: str) -> None:
         """ Loads vault, push GameStage stage onto the stages stack"""
@@ -118,4 +113,4 @@ class Game:
 
             utils.clear_screen()
             self.stages.top().render()
-            self.stages.top().loop() # Blocking function
+            self.stages.top().loop()

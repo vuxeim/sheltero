@@ -237,7 +237,7 @@ class WindowsKeys:
     RIGHT = '\xe0M'
     UP = '\xe0H'
     DOWN = '\xe0P'
-    
+
     ENTER = '\r'
     BACKSPACE = '\x08'
     SPACE = ' '
@@ -450,14 +450,13 @@ class Keys:
         code = self.code(name)
         if code is not None:
             return code
-        else:
-            return self.__getattribute__(name)
+        return self.__getattribute__(name)
 
     def _is_key_name(self, name):
         return name == name.upper() and not name.startswith('_')
 
 
-def _make_escapes(codes):
+def __make_escapes(codes):
     escapes = set()
     for code in codes:
         for i in range(len(code)):
@@ -465,29 +464,25 @@ def _make_escapes(codes):
     return escapes
 
 
-unix_keys = Keys([
+both = {
+    AsciiKeys(),
+    ControlKeys(),
+    UnicodeAsciiKeys(),
+    JargonKeys(),
+    IntercalKeys()
+}
+unix_keys = {
     VT100StandardModeKeys(),
     VT100ApplicationsModeKeys(),
     VT220Keys(),
     UnixKeys(),
     AlternativeUnixFunctionKeys(),
-    AsciiKeys(),
-    ControlKeys(),
-    UnicodeAsciiKeys(),
-    JargonKeys(),
-    IntercalKeys()
-])
-windows_keys = Keys([
+}
+windows_keys = {
     WindowsKeys(),
-    AsciiKeys(),
-    ControlKeys(),
-    UnicodeAsciiKeys(),
-    JargonKeys(),
-    IntercalKeys()
-])
-
+}
 
 PLATFORM_KEYS = {
-    'unix': unix_keys,
-    'windows': windows_keys,
+    'unix': Keys(unix_keys | both),
+    'windows': Keys(windows_keys | both),
 }
